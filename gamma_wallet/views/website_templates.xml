@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- The Gamma Wallet box: the reward QR code, or the store-credit QR code with its countdown.
+         Expects `order`. Asks this shop (never Gamma) every 5 seconds through static/src/js. -->
+    <template id="box">
+        <t t-set="gw" t-value="order.gamma_portal_values()"/>
+        <t t-if="gw['kind'] == 'reward'">
+            <section class="gamma-wallet-box" data-kind="reward" t-att-data-status-url="gw['status_url']" t-att-data-poll="'1' if gw['poll'] else '0'">
+                <div t-attf-class="gw-card #{'gw-is-done' if gw['claimed'] else ''}">
+                    <div class="gw-qr-col">
+                        <div class="gamma-wallet-qr gw-qr-tile"><img t-att-src="gw['qr']" width="200" height="200" alt="Reward QR code"/></div>
+                        <div class="gw-check" aria-hidden="true">&#10003;</div>
+                    </div>
+                    <div class="gw-body">
+                        <p class="gamma-wallet-logo"><img src="/gamma_wallet/static/src/img/gamma-logo.png" alt="Gamma Wallet" height="22"/></p>
+                        <h2 class="gamma-wallet-title">Collect your reward</h2>
+                        <p class="gw-lead gw-when-waiting">This order earns you a reward. Add it to your Gamma Wallet in a few seconds.</p>
+                        <ol class="gw-steps gw-when-waiting">
+                            <li>Open the Gamma Wallet app</li>
+                            <li>Scan this code</li>
+                            <li>The reward is added to your wallet</li>
+                        </ol>
+                        <a class="gamma-wallet-open gw-button gw-when-waiting" t-att-href="gw['link']">On your phone? Open in Gamma Wallet</a>
+                        <p class="gamma-wallet-done gw-done" t-att-hidden="None if gw['claimed'] else 'hidden'">Reward collected. Thank you!</p>
+                    </div>
+                </div>
+            </section>
+        </t>
+        <t t-elif="gw['kind'] == 'credit'">
+            <section class="gamma-wallet-box gamma-wallet-credit" data-kind="credit" data-poll="1"
+                     t-att-data-status-url="gw['status_url']" t-att-data-new-code-url="gw['new_code_url']" t-att-data-seconds-left="gw['seconds']">
+                <div class="gw-card">
+                    <div class="gw-qr-col">
+                        <div class="gamma-wallet-qr gw-qr-tile">
+                            <img class="gamma-wallet-qr-img" t-att-src="gw['qr']" width="220" height="220" alt="Store-credit QR code"
+                                 t-att-hidden="None if gw['qr'] and gw['seconds'] > 0 else 'hidden'"/>
+                        </div>
+                        <div class="gw-timer" aria-hidden="true"><span class="gw-timer-bar"/></div>
+                        <p class="gamma-wallet-countdown gw-countdown" aria-live="polite"/>
+                        <div class="gw-check" aria-hidden="true">&#10003;</div>
+                    </div>
+                    <div class="gw-body">
+                        <p class="gamma-wallet-logo"><img src="/gamma_wallet/static/src/img/gamma-logo.png" alt="Gamma Wallet" height="22"/></p>
+                        <h2 class="gamma-wallet-title">Use your store credits</h2>
+                        <p class="gw-lead">Settle the whole order (<strong t-field="order.amount_total" t-options="{'widget': 'monetary', 'display_currency': order.currency_id}"/>) with the store credits you hold at our shop.</p>
+                        <ol class="gw-steps gw-when-waiting">
+                            <li>Open the Gamma Wallet app</li>
+                            <li>Scan this code before the time runs out</li>
+                            <li>Confirm, and this page updates by itself</li>
+                        </ol>
+                        <a class="gamma-wallet-open gw-button gw-when-waiting" t-att-href="gw['link']">On your phone? Open in Gamma Wallet</a>
+                        <button type="button" class="gamma-wallet-new-code gw-button" hidden="hidden">Show a new code</button>
+                        <p class="gamma-wallet-done gw-done" hidden="hidden"/>
+                    </div>
+                </div>
+            </section>
+        </t>
+        <t t-elif="gw['kind'] == 'credit_done'">
+            <p class="gamma-wallet-note">Your order is settled with your store credits through Gamma Wallet.</p>
+        </t>
+        <t t-elif="gw['kind'] == 'note'">
+            <p class="gamma-wallet-note" t-out="gw['note']"/>
+        </t>
+    </template>
+
+    <!-- The order confirmation page at the end of the checkout. -->
+    <template id="confirmation" inherit_id="website_sale.confirmation">
+        <xpath expr="//t[@t-call='website_sale.payment_confirmation_status']" position="after">
+            <t t-call="gamma_wallet.box"/>
+        </xpath>
+    </template>
+
+    <!-- The customer's order page (also reached by guests through the order link). -->
+    <template id="portal_order" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//div[@id='introduction']" position="after">
+            <div class="mt-3"><t t-call="gamma_wallet.box"><t t-set="order" t-value="sale_order"/></t></div>
+        </xpath>
+    </template>
+</odoo>

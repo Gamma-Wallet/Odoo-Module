@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="mail_template_gamma_reward" model="mail.template">
+        <field name="name">Gamma Wallet: your reward</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="subject">Your reward from {{ object.company_id.name }} (order {{ object.name }})</field>
+        <field name="email_from">{{ (object.user_id.email_formatted or object.company_id.email_formatted or user.email_formatted) }}</field>
+        <field name="partner_to">{{ object.partner_id.id }}</field>
+        <field name="auto_delete" eval="True"/>
+        <field name="body_html" type="html">
+<div style="margin:0;padding:0;font-family:Arial,sans-serif;color:#1d2a33">
+    <p style="margin:0 0 12px;font-size:15px">Hello <t t-out="object.partner_id.name or ''">Anna</t>,</p>
+    <p style="margin:0 0 12px;font-size:15px;line-height:1.5">
+        Thank you, we have received your payment. Your order <strong t-out="object.name or ''">S00042</strong>
+        earned a reward: scan the code below with the Gamma Wallet app to add it to your wallet.
+    </p>
+    <div style="text-align:center;margin:20px 0">
+        <img t-att-src="object.gamma_qr_url" width="200" height="200" alt="Reward QR code" style="display:block;margin:0 auto 14px"/>
+        <a t-att-href="object.gamma_link" style="color:#2e9bcc;font-weight:bold;font-size:15px">On your phone? Open in Gamma Wallet</a>
+    </div>
+    <p style="margin:0;font-size:13px;color:#5b6b76">The reward is then added to your wallet, under <t t-out="object.company_id.name or ''">our shop</t>.</p>
+</div>
+        </field>
+    </record>
+</odoo>

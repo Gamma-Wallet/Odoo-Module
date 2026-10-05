@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.gamma_wallet</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Gamma Wallet" string="Gamma Wallet" name="gamma_wallet" logo="/gamma_wallet/static/description/icon.png" groups="base.group_system">
+                    <block title="Connection" name="gamma_wallet_connection">
+                        <setting id="gamma_wallet_token" string="Integration token"
+                                 help="Create it in Gamma Business → Integrations, as the business owner. It starts with GWINT_ and is shown only once. Keep it private, like a password.">
+                            <field name="gamma_token" password="True" placeholder="GWINT_…"/>
+                            <div class="mt-2"><a href="https://business.gamma-wallet.com" target="_blank">Gamma Business</a></div>
+                        </setting>
+                        <setting id="gamma_wallet_status" string="Status">
+                            <field name="gamma_status" nolabel="1" readonly="1"/>
+                            <div class="mt-2">
+                                <button name="action_gamma_check_connection" type="object" string="Check again" class="btn-link p-0" icon="fa-refresh"/>
+                            </div>
+                        </setting>
+                    </block>
+                    <block title="Rewards for paid orders" name="gamma_wallet_rewards">
+                        <setting id="gamma_wallet_rewards" string="Rewards"
+                                 help="Give customers a QR code to collect their reward for each paid order.">
+                            <field name="gamma_rewards"/>
+                        </setting>
+                        <setting id="gamma_wallet_reward_email" string="Email the reward"
+                                 help="When an order paid at checkout is confirmed, email the customer the reward QR code. Orders paid later (wire transfer, pay on site) always get this email, because that is how their customer receives the reward.">
+                            <field name="gamma_reward_email"/>
+                        </setting>
+                        <setting id="gamma_wallet_providers" string="Payment providers that earn a reward"
+                                 help="Paid at checkout (card and the like): the reward is given as soon as the payment is confirmed, and its QR code is on the order confirmation page. Paid later (wire transfer, pay on site): nothing is paid when the order is placed, so the reward is given only when you confirm the order once the money is in. Orders settled with store credits never earn a reward.">
+                            <field name="gamma_reward_provider_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                        </setting>
+                    </block>
+                    <block title="Store credits at checkout" name="gamma_wallet_credits">
+                        <setting id="gamma_wallet_credits" string="Use Store Credits with Gamma"
+                                 help="At checkout, the customer scans a QR code with Gamma Wallet and the whole order is settled from their store credits. The code is valid for 60 seconds. An order settled this way earns no reward. Turn it on or off like any payment provider.">
+                            <button name="%(payment.action_payment_provider)d" type="action" string="Payment providers" class="btn-link p-0" icon="fa-arrow-right"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

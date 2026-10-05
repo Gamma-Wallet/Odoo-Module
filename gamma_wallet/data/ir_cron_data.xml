@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Retries rewards that failed, for example while Gamma could not be reached. -->
+    <record id="ir_cron_gamma_retry_rewards" model="ir.cron">
+        <field name="name">Gamma Wallet: retry failed rewards</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">model._gamma_cron_retry()</field>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

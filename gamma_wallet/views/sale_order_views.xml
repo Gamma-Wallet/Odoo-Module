@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- A "Gamma Wallet" tab on the sales order: where the reward or the store credits stand. -->
+    <record id="view_order_form_gamma_wallet" model="ir.ui.view">
+        <field name="name">sale.order.form.gamma_wallet</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="Gamma Wallet" name="gamma_wallet" invisible="not website_id">
+                    <field name="gamma_summary" nolabel="1" readonly="1"/>
+                    <button name="action_gamma_send_reward" type="object" string="Send the reward QR code to the customer"
+                            class="btn-secondary" invisible="gamma_bill_status == 'Claimed' or state != 'sale'"/>
+                    <field name="gamma_bill_status" invisible="1"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

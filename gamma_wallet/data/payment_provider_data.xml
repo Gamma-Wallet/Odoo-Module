@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- "Use Store Credits with Gamma": the whole order is settled with the credits the customer
+         holds at the shop. It is offered only while the shop is connected to Gamma, the business has
+         a Reward service and the currency matches. -->
+    <record id="payment_provider_gamma_wallet" model="payment.provider">
+        <field name="name">Use Store Credits with Gamma</field>
+        <field name="code">gamma_wallet</field>
+        <field name="state">enabled</field>
+        <field name="is_published">True</field>
+        <field name="gamma_earns_reward">False</field>
+        <field name="module_id" ref="base.module_gamma_wallet"/>
+        <field name="image_128" type="base64" file="gamma_wallet/static/src/img/gamma-mark-128.png"/>
+        <field name="redirect_form_view_id" ref="redirect_form"/>
+        <field name="pre_msg"><![CDATA[<p>After you place the order, scan the QR code with the Gamma Wallet app. The whole order is settled with the store credits you hold at our shop.</p>]]></field>
+        <field name="pending_msg"><![CDATA[<p>Scan the QR code with the Gamma Wallet app to settle your order with your store credits.</p>]]></field>
+        <field name="done_msg"><![CDATA[<p>Your order is settled with your store credits through Gamma Wallet.</p>]]></field>
+        <field name="payment_method_ids" eval="[Command.set([ref('gamma_wallet.payment_method_gamma_wallet')])]"/>
+    </record>
+</odoo>
