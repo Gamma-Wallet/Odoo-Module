@@ -10,7 +10,7 @@
                 <page string="Gamma Wallet" name="gamma_wallet" invisible="not website_id">
                     <field name="gamma_summary" nolabel="1" readonly="1"/>
                     <button name="action_gamma_send_reward" type="object" string="Send the reward QR code to the customer"
-                            class="btn-secondary" invisible="gamma_bill_status == 'Claimed' or state != 'sale'"/>
+                            class="btn-secondary" groups="sales_team.group_sale_salesman" invisible="gamma_bill_status == 'Claimed' or state != 'sale'"/>
                     <field name="gamma_bill_status" invisible="1"/>
                 </page>
             </xpath>

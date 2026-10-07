@@ -47,6 +47,10 @@ Usually your Odoo partner (the company that set up your Odoo) does this.
 4. Turn on developer mode (*Settings → Activate the developer mode*), then go to **Apps → Update Apps List**.
 5. Search for **Gamma Wallet** in Apps and click **Activate**.
 
+Only orders placed **after** the module is installed earn rewards; older orders never do.
+
+**Updating to a new version:** replace the `gamma_wallet` folder with the new one, restart Odoo, then open **Apps**, find **Gamma Wallet** and click **Upgrade**.
+
 ## 3. Create your integration token in Gamma Business
 
 The token is the key that lets your shop talk to your Gamma business. You never give the module your password.
@@ -99,7 +103,8 @@ The reward the customer receives follows the Reward service you have active in G
 Good to know:
 
 - Store credits always cover the **whole** order. A customer who doesn't hold enough credits at your shop can't complete it with their credits and chooses another payment method instead.
-- The option is shown only when your shop is connected, your business has a Reward service active, the currency matches and the order total is above zero.
+- The option is shown only at the checkout and on the order's own page, for the order's full total: not on a payment link, an invoice, a down payment or the rest of a partly paid order.
+- It is shown only when your shop is connected, your business has a Reward service active, the currency matches and the order total is above zero.
 - An order settled with store credits doesn't earn a new reward.
 
 ## 7. What your customers see
@@ -159,7 +164,12 @@ Do both steps together. **The old token stops working the moment you create the 
 No. Customers pay you exactly as before, through the payment providers you already use. Gamma only records the reward contract for the order. A customer who uses store credits is using value you promised earlier, not paying Gamma.
 
 **What does the module send to Gamma?**
-For each order that earns a reward or uses store credits: the order reference, the total, the currency and the date. No names, addresses, email addresses or products.
+Every request carries your integration token and the module version. For each order that earns a reward or uses store credits: the order reference (your order number with a short code for your database, such as `OD-bbd9bf8e-S00042`), the total, the currency, the date, and the name of the platform (Odoo). About once an hour it checks the connection. No names, addresses, email addresses or products.
+
+The reward QR code image on the order pages and in the reward email is loaded from `integration.gamma-wallet.com`, so the customer's browser or email app contacts that server when it shows it. Mention this in your shop's privacy policy.
+
+**I have a staging or test copy of my database.**
+A copy made with Odoo.sh staging or `odoo-bin neutralize` is disconnected from Gamma automatically: the token is removed, so the copy never creates real rewards. A copy that is not neutralized keeps the token; remove it in the Gamma Wallet settings before you test. Each database also gets its own order references, so a copy never mixes its orders with your live shop's.
 
 **My shop is on Odoo Online. Can I use it?**
 Not with this module: Odoo Online accepts only Odoo's own apps. Moving to Odoo.sh or your own server makes it possible; your Odoo partner can advise.
@@ -176,8 +186,11 @@ The module doesn't take a reward back. If the order already had a reward, its QR
 **Are only website orders rewarded?**
 Yes. Quotations you create yourself in Sales are not shop orders and earn nothing.
 
+**When exactly is the reward given for a card payment?**
+When the payment is done. If your payment provider only authorises the card at checkout and you capture it later, the reward follows the capture.
+
 **What happens if I uninstall the module?**
-New rewards stop and the store credits option disappears. Rewards already given stay in your customers' wallets.
+New rewards stop, the store credits option disappears, and the module's settings, including your integration token, are deleted. Rewards already given stay in your customers' wallets. Odoo refuses to uninstall it while orders paid with store credits exist, as it does for every payment module.
 
 ## 11. When something is wrong
 
@@ -187,8 +200,8 @@ New rewards stop and the store credits option disappears. Rewards already given 
 | *… works only with a Reward service* | Your active service in Gamma is not a Reward service. Activate a Reward service in Gamma Business. The module checks again every hour; click **Check again** to see the change at once. |
 | *Your shop sells in … but your Gamma business uses …* | Your website must sell in the same currency as your Gamma business (the currency of its pricelist). |
 | *Use Store Credits with Gamma* is missing at checkout | Check that the provider is enabled and published, that the status shows *Connected* with no red line about the Reward service, that the currencies match and that the total is above zero. |
-| An order has no reward | Check that your business has a Reward service active, that the order's payment provider is in the list, that **Rewards** is on, and that the order is confirmed. The order's Gamma Wallet tab gives the reason. |
-| An error in the order's Gamma Wallet tab | The module tries again on its own every 10 minutes, a few times. If the tab still shows an error, fix the cause it names (usually the token), then click **Send the reward QR code to the customer**: this creates the reward and emails it. |
+| An order has no reward | Check that your business has a Reward service active, that the order's payment provider is in the list, that **Rewards** is on, that the order is confirmed and its payment done, and that it was placed after the module was installed. The order's Gamma Wallet tab gives the reason. |
+| An error in the order's Gamma Wallet tab | The module tries again on its own every 10 minutes, a few times. If the tab still shows an error, fix the cause it names (usually the token), then click **Send the reward QR code to the customer**: this creates the reward and emails it, also after the automatic tries have run out. |
 | *Gamma could not be reached* | Your server must allow outgoing connections to `https://integration.gamma-wallet.com`. Ask your hosting provider or Odoo partner if this message stays. |
 | *Too many requests to Gamma* | Wait a minute and try again. |
 | The reward email didn't arrive | Ask the customer to check their spam folder, then send it again from the order. If none of your shop's emails arrive, the problem is your Odoo email settings, not the module. |

@@ -35,13 +35,19 @@ class PaymentTransaction(models.Model):
         reference = notification_data.get('reference')
         tx = self.search([('reference', '=', reference), ('provider_code', '=', 'gamma_wallet')])
         if not tx:
-            raise ValidationError("Gamma Wallet: " + _("No transaction found matching reference %s.", reference))
+            raise ValidationError(_("Gamma Wallet: no transaction found matching reference %s.", reference))
         return tx
 
     def _process_notification_data(self, notification_data):
-        """ The customer placed the order: ask Gamma for a QR code and wait for the credits. """
+        """ The customer placed the order: ask Gamma for a QR code and wait for the credits.
+
+        Runs once per transaction. The route is public and the reference is guessable, so a second
+        post (a replay, a double submit) must not replace the code the customer is about to scan. """
         super()._process_notification_data(notification_data)
         if self.provider_code != 'gamma_wallet':
+            return
+        self._gamma_lock()
+        if self.state != 'draft' or self.gamma_credit_request:
             return
         try:
             self._gamma_start_request()
@@ -53,6 +59,13 @@ class PaymentTransaction(models.Model):
     def _gamma_order(self):
         return self.sale_order_ids[:1]
 
+    def _gamma_lock(self):
+        """ Holds this transaction's row until the end of the request, so two requests for the same
+        order (two tabs, a double click) run one after the other and the second sees what the first did. """
+        self.ensure_one()
+        self.env.cr.execute('SELECT id FROM payment_transaction WHERE id = %s FOR UPDATE', [self.id])
+        self.invalidate_recordset()
+
     def _gamma_start_request(self):
         """ Asks Gamma for a new store-credit request for the whole order, and keeps it. """
         self.ensure_one()
@@ -60,9 +73,12 @@ class PaymentTransaction(models.Model):
         if not api:
             raise gamma_api.GammaApiError(401, '0392', 'IntegrationTokenMissing')
         order = self._gamma_order()
+        # Store credits settle the whole order or nothing: never a down payment or a remainder.
+        if not order or self.currency_id.compare_amounts(self.amount, order.amount_total) != 0:
+            raise gamma_api.GammaApiError(400, None, 'NotTheWholeOrder')
         request = api.start_credit({
-            'reference': order.name if order else self.reference,
-            'total': round(self.amount, self.currency_id.decimal_places),
+            'reference': gamma_api.reference(self.env, order.name),
+            'total': self.currency_id.round(self.amount),
             'currencyCode': self.currency_id.name,
         })
         self.write({
@@ -90,8 +106,24 @@ class PaymentTransaction(models.Model):
 
     def _gamma_mark_settled(self, checked):
         """ Records a settled request once: the payment is done and the order confirmed. """
+        self._gamma_lock()
         if self.state == 'done':
             return
         self.write({'provider_reference': checked.get('requestId') or self.gamma_request_id, 'gamma_credit_qr': ''})
         self._set_done(state_message=_("Settled with the customer's store credits through Gamma Wallet."))
         self._post_process()
+
+    # ------------------------------------------------------------------ rewards for captured payments
+
+    def _post_process(self):
+        """ A card payment that was only authorised at checkout earns its reward once it is captured
+        (done), even though the order was confirmed earlier. Nothing happens twice: an order keeps
+        one bill and one reward email. """
+        res = super()._post_process()
+        for tx in self.filtered(lambda t: t.state == 'done' and t.provider_code != 'gamma_wallet'):
+            orders = tx.sale_order_ids.filtered(lambda o: o.state == 'sale' and o.website_id)
+            try:
+                orders._gamma_reward_after_confirm()
+            except Exception:  # never let a reward problem block a payment
+                _logger.exception("Gamma Wallet: reward after payment %s failed", tx.reference)
+        return res

@@ -1,0 +1,687 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* gamma_wallet
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0-20260926\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-07 07:39+0000\n"
+"PO-Revision-Date: 2026-10-07 07:39+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "%d s left"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/res_config_settings.py:0
+msgid "%s day(s) left"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "%s left"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid ") with the store credits you hold at our shop."
+msgstr ""
+
+#. module: gamma_wallet
+#: model:mail.template,body_html:gamma_wallet.mail_template_gamma_reward
+msgid ""
+"<div style=\"margin:0;padding:0;font-family:Arial,sans-serif;color:#1d2a33\">\n"
+"    <p style=\"margin:0 0 12px;font-size:15px\">Hello <t t-out=\"object.partner_id.name or ''\">Anna</t>,</p>\n"
+"    <p style=\"margin:0 0 12px;font-size:15px;line-height:1.5\">\n"
+"        Thank you, we have received your payment. Your order <strong t-out=\"object.name or ''\">S00042</strong>\n"
+"        earned a reward: scan the code below with the Gamma Wallet app to add it to your wallet.\n"
+"    </p>\n"
+"    <div style=\"text-align:center;margin:20px 0\">\n"
+"        <img t-att-src=\"object.gamma_qr_url\" width=\"200\" height=\"200\" alt=\"Reward QR code\" style=\"display:block;margin:0 auto 14px\"/>\n"
+"        <a t-att-href=\"object.gamma_link\" style=\"color:#2e9bcc;font-weight:bold;font-size:15px\">On your phone? Open in Gamma Wallet</a>\n"
+"    </div>\n"
+"    <p style=\"margin:0;font-size:13px;color:#5b6b76\">The reward is then added to your wallet, under <t t-out=\"object.company_id.name or ''\">our shop</t>.</p>\n"
+"</div>\n"
+"        "
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:payment.provider,pre_msg:gamma_wallet.payment_provider_gamma_wallet
+msgid ""
+"After you place the order, scan the QR code with the Gamma Wallet app. The "
+"whole order is settled with the store credits you hold at our shop."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid ""
+"As soon as your payment is confirmed, you will receive a QR code by email to"
+" collect your reward with Gamma Wallet."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid ""
+"At checkout, the customer scans a QR code with Gamma Wallet and the whole "
+"order is settled from their store credits. The code is valid for 60 seconds."
+" An order settled this way earns no reward. Turn it on or off like any "
+"payment provider."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid "Bill: %s"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/res_config_settings.py:0
+msgid "Business"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Check again"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/res_config_settings.py:0
+msgid "Checked"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_payment_provider__code
+msgid "Code"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Collect your reward"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model,name:gamma_wallet.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Confirm, and this page updates by itself"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/res_config_settings.py:0
+msgid "Connected"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Connection"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,help:gamma_wallet.field_res_config_settings__gamma_token
+msgid ""
+"Create it in Gamma Business → Integrations, as the business owner. It starts"
+" with GWINT_ and is shown only once."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid ""
+"Create it in Gamma Business → Integrations, as the business owner. It starts"
+" with GWINT_ and is shown only once. Keep it private, like a password."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/res_config_settings.py:0
+msgid "Currency"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Done! Your order is settled with your store credits."
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_payment_provider__gamma_earns_reward
+msgid "Earns a Gamma reward"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,help:gamma_wallet.field_res_config_settings__gamma_reward_email
+msgid "Email the customer the reward QR code when the order is confirmed."
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_res_config_settings__gamma_reward_email
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Email the reward"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "GWINT_…"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_sale_order__gamma_attempts
+msgid "Gamma Attempts"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Gamma Business"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_sale_order__gamma_claimed_on
+msgid "Gamma Claimed On"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_sale_order__gamma_code
+msgid "Gamma Code"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_payment_transaction__gamma_credit_link
+msgid "Gamma Credit Link"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_payment_transaction__gamma_credit_qr
+msgid "Gamma Credit Qr"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_payment_transaction__gamma_credit_request
+msgid "Gamma Credit Request"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_payment_transaction__gamma_expires_on
+msgid "Gamma Expires On"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_sale_order__gamma_qr_url
+msgid "Gamma Qr Url"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_sale_order__gamma_summary
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.view_order_form_gamma_wallet
+msgid "Gamma Wallet"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/res_config_settings.py:0
+msgid ""
+"Gamma Wallet for Odoo works only with a Reward service. Your business has no"
+" Reward service active in Gamma, so customers get no reward QR code and "
+"store credits are not offered at checkout. Activate a Reward service in "
+"Gamma Business."
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_res_config_settings__gamma_status
+msgid "Gamma Wallet status"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields.selection,name:gamma_wallet.selection__payment_provider__code__gamma_wallet
+msgid "Gamma Wallet store credits"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.actions.server,name:gamma_wallet.ir_cron_gamma_check_connection_ir_actions_server
+msgid "Gamma Wallet: check the connection"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/payment_transaction.py:0
+msgid "Gamma Wallet: no transaction found matching reference %s."
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.actions.server,name:gamma_wallet.ir_cron_gamma_retry_rewards_ir_actions_server
+msgid "Gamma Wallet: retry failed rewards"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:mail.template,name:gamma_wallet.mail_template_gamma_reward
+msgid "Gamma Wallet: your reward"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_sale_order__gamma_bill_id
+msgid "Gamma bill"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Gamma cannot be reached right now. Please try again in a moment."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/gamma_api.py:0
+msgid ""
+"Gamma could not be reached. Check that this server can make outgoing HTTPS "
+"connections."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/gamma_api.py:0
+msgid ""
+"Gamma does not recognise this token. Copy it again from Gamma Business → "
+"Integrations."
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_sale_order__gamma_error
+msgid "Gamma error"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_payment_transaction__gamma_request_id
+msgid "Gamma request"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,help:gamma_wallet.field_res_config_settings__gamma_rewards
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Give customers a QR code to collect their reward for each paid order."
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_res_config_settings__gamma_token
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Integration token"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid "No reward is given for an order settled with store credits."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid "No reward: your business has no Reward service active in Gamma."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid ""
+"Not a shop order: Gamma Wallet rewards are given for orders from the "
+"website."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/res_config_settings.py:0
+msgid "Not checked yet. Save, or click Check again."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/res_config_settings.py:0
+msgid "Not connected. Paste your integration token above and save."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid "Not sent to Gamma Wallet yet. It is sent when the order is confirmed."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "On your phone? Open in Gamma Wallet"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Open the Gamma Wallet app"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,help:gamma_wallet.field_payment_provider__gamma_earns_reward
+msgid ""
+"Orders paid with this payment provider earn a Gamma Wallet reward once they "
+"are paid. Paid-later providers (wire transfer, pay on site) earn it when you"
+" confirm the order."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid ""
+"Paid at checkout (card and the like): the reward is given as soon as the "
+"payment is confirmed, and its QR code is on the order confirmation page. "
+"Paid later (wire transfer, pay on site): nothing is paid when the order is "
+"placed, so the reward is given only when you confirm the order once the "
+"money is in. Orders settled with store credits never earn a reward."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid ""
+"Paid later: when you confirm the order (the money is in), the reward QR code"
+" is created and the customer receives it by email."
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model,name:gamma_wallet.model_payment_provider
+msgid "Payment Provider"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model,name:gamma_wallet.model_payment_transaction
+msgid "Payment Transaction"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Payment providers"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_res_config_settings__gamma_reward_provider_ids
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Payment providers that earn a reward"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid "Request: %s"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Reward QR code"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid "Reward collected"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Reward collected. Thank you!"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_sale_order__gamma_emailed
+msgid "Reward emailed"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_sale_order__gamma_link
+msgid "Reward link"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_sale_order__gamma_bill_status
+msgid "Reward status"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Rewards"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,field_description:gamma_wallet.field_res_config_settings__gamma_rewards
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Rewards for paid orders"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model,name:gamma_wallet.model_sale_order
+msgid "Sales Order"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:payment.provider,pending_msg:gamma_wallet.payment_provider_gamma_wallet
+msgid ""
+"Scan the QR code with the Gamma Wallet app to settle your order with your "
+"store credits."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Scan this code"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Scan this code before the time runs out"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.view_order_form_gamma_wallet
+msgid "Send the reward QR code to the customer"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid ""
+"Sent to Gamma Wallet. The customer can collect the reward for this order "
+"with its QR code."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Settle the whole order ("
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid "Settled with store credits through Gamma Wallet."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/payment_transaction.py:0
+msgid "Settled with the customer's store credits through Gamma Wallet."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Show a new code"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Status"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Store credits at checkout"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Store-credit QR code"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid ""
+"The Gamma reward QR code could not be sent: the order is not eligible for a "
+"reward yet, the customer has no email address, or Gamma could not be "
+"reached."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid "The Gamma reward QR code was emailed to %s."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/gamma_api.py:0
+msgid "The business this token belongs to is not available in Gamma."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid "The customer collected the Gamma Wallet reward."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "The reward is added to your wallet"
+msgstr ""
+
+#. module: gamma_wallet
+#: model:ir.model.fields,help:gamma_wallet.field_payment_provider__code
+msgid "The technical code of this payment provider."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "This code has expired."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid ""
+"This order earns a Gamma Wallet reward. Once your payment is received, we "
+"will email you a QR code to collect it."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid "This order earns no reward (its payment method does not earn one)."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid ""
+"This order earns you a reward. Add it to your Gamma Wallet in a few seconds."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/gamma_api.py:0
+msgid ""
+"This token has expired. Create a new one in Gamma Business → Integrations."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/gamma_api.py:0
+msgid ""
+"This token was disabled or replaced. Create a new one in Gamma Business → "
+"Integrations."
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/res_config_settings.py:0
+msgid "Token"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/gamma_api.py:0
+msgid "Too many requests to Gamma. Try again in a minute."
+msgstr ""
+
+#. module: gamma_wallet
+#: model:payment.method,name:gamma_wallet.payment_method_gamma_wallet
+#: model:payment.provider,name:gamma_wallet.payment_provider_gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid "Use Store Credits with Gamma"
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+msgid "Use your store credits"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid "Waiting for the customer to collect the reward"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/sale_order.py:0
+msgid "Waiting for the customer to settle it with store credits."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.res_config_settings_view_form
+msgid ""
+"When an order paid at checkout is confirmed, email the customer the reward "
+"QR code. Orders paid later (wire transfer, pay on site) always get this "
+"email, because that is how their customer receives the reward."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:ir.ui.view,arch_db:gamma_wallet.box
+#: model_terms:payment.provider,done_msg:gamma_wallet.payment_provider_gamma_wallet
+msgid "Your order is settled with your store credits through Gamma Wallet."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:payment.provider,auth_msg:gamma_wallet.payment_provider_gamma_wallet
+msgid "Your payment has been authorized."
+msgstr ""
+
+#. module: gamma_wallet
+#: model_terms:payment.provider,cancel_msg:gamma_wallet.payment_provider_gamma_wallet
+msgid "Your payment has been cancelled."
+msgstr ""
+
+#. module: gamma_wallet
+#: model:mail.template,subject:gamma_wallet.mail_template_gamma_reward
+msgid ""
+"Your reward from {{ object.company_id.name }} (order {{ object.name }})"
+msgstr ""
+
+#. module: gamma_wallet
+#. odoo-python
+#: code:addons/gamma_wallet/models/res_config_settings.py:0
+msgid ""
+"Your shop sells in %(shop)s but your Gamma business uses %(gamma)s. Orders "
+"cannot be sent to Gamma until they match."
+msgstr ""

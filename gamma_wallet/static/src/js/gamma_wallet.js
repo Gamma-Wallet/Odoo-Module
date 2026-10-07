@@ -9,8 +9,11 @@
 ( function () {
 	'use strict';
 
-	// Texts are in English, like the page templates.
-	var text = window.gammaWalletText || {};
+	// Texts come translated with the page (see views/website_templates.xml); English otherwise.
+	var text = {};
+	document.querySelectorAll( '.gamma-wallet-texts [data-key]' ).forEach( function ( el ) {
+		text[ el.dataset.key ] = el.textContent;
+	} );
 	var POLL_MS = 5000;
 	var GIVE_UP_MS = 15 * 60 * 1000;
 

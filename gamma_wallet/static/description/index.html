@@ -1,0 +1,81 @@
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#1d2a33">Gamma Wallet for Odoo</h2>
+        <h3 class="oe_slogan">Rewards for paid orders and store credits at checkout, with the Gamma Wallet app</h3>
+        <p class="oe_mt32">
+            Gamma Wallet is a cardless loyalty wallet for local businesses. With this module, your
+            customers earn a reward for every paid order of your Odoo eCommerce shop, and can settle an
+            order with the store credits they hold at your shop, by scanning a QR code with the Gamma
+            Wallet app. Credits are a promise of value at your shop, not money: Gamma never handles a
+            payment.
+        </p>
+    </div>
+</section>
+
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">A reward for every paid order</h3>
+        <p>
+            When an order is paid and confirmed, the customer sees a QR code on the order confirmation
+            page and in a reward email. They scan it with Gamma Wallet and the reward lands in their
+            wallet, as store credits they can spend back at your shop. You choose which payment
+            providers earn a reward; for wire transfer and pay-on-site orders, the reward follows when
+            you confirm the order.
+        </p>
+        <div class="oe_demo oe_screenshot">
+            <img src="screenshot-confirmation-reward.png" alt="The reward QR code on the order confirmation page"/>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Use Store Credits with Gamma</h3>
+        <p>
+            A payment provider that settles the whole order with the customer's store credits. After
+            placing the order, the customer scans a QR code valid for 60 seconds; the page updates by
+            itself and Odoo confirms the order. An order settled this way earns no reward.
+        </p>
+        <div class="oe_demo oe_screenshot">
+            <img src="screenshot-confirmation-credits.png" alt="Settling an order with store credits"/>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Set up in minutes</h3>
+        <ol>
+            <li>Create a free Gamma Business account at <a href="https://business.gamma-wallet.com">business.gamma-wallet.com</a> and activate a Reward service.</li>
+            <li>In Gamma Business → Integrations, create an integration token.</li>
+            <li>In Odoo, open Settings → Gamma Wallet, paste the token and save.</li>
+        </ol>
+        <div class="oe_demo oe_screenshot">
+            <img src="screenshot-settings.png" alt="The Gamma Wallet settings in Odoo"/>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">What is sent to Gamma</h3>
+        <p>
+            The module connects to the Gamma Wallet service at integration.gamma-wallet.com. Every request
+            carries your integration token and the module version. For an order that earns a reward or is
+            settled with store credits, it sends the order reference, the total, the currency and the date,
+            with the name of the platform (Odoo). About once an hour it checks the connection. It sends no
+            customer names, addresses, email addresses or products.
+        </p>
+        <p>
+            The reward QR code image on the order pages and in the reward email is loaded from
+            integration.gamma-wallet.com, so the customer's browser or email app contacts that server when
+            it shows it.
+        </p>
+        <p>
+            <a href="https://www.gamma-wallet.com/en/terms-and-conditions">Terms and conditions</a> ·
+            <a href="https://www.gamma-wallet.com/en/privacy-policy">Privacy policy</a> ·
+            Support: <a href="mailto:developer@gamma-wallet.com">developer@gamma-wallet.com</a>
+        </p>
+        <p>For Odoo 18, installed on your own server or on Odoo.sh (tested on Odoo 18 Community). Not available on Odoo Online, which does not allow custom modules.</p>
+    </div>
+</section>

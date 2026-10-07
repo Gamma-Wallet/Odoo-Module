@@ -71,14 +71,17 @@ class ResConfigSettings(models.TransientModel):
         return Markup('<br/>').join(parts)
 
     def set_values(self):
-        super().set_values()
+        res = super().set_values()
         # Ticked providers earn a reward; every other one (store credits aside) does not.
         all_providers = self.env['payment.provider'].sudo().search([('code', '!=', 'gamma_wallet'), ('state', '!=', 'disabled')])
         chosen = self.gamma_reward_provider_ids.sudo()
         (all_providers - chosen).gamma_earns_reward = False
         chosen.gamma_earns_reward = True
         gamma_api.check_connection(self.env)
+        return res
 
     def action_gamma_check_connection(self):
+        # Settings are for administrators only, also when called directly rather than from the page.
+        self.check_access('write')
         gamma_api.check_connection(self.env)
         return {'type': 'ir.actions.client', 'tag': 'reload'}

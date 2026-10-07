@@ -56,18 +56,35 @@ class SaleOrder(models.Model):
             and gamma_api.reward_service_active(self.env)
         )
 
-    def _gamma_qualifies(self):
-        """ True when this order should have a reward QR code now: it is a shop order, rewards are
-        on, the business has a Reward service, the payment provider earns one, the currencies match
-        and the order is confirmed — for a paid-later order, that is when the shop confirms it once
-        the money is in. Orders settled with store credits never earn one. """
+    def _gamma_paid(self):
+        """ True when the money is in. An online payment must be done (not pending, not only
+        authorised); a paid-later order counts as paid once the shop confirms it. """
         self.ensure_one()
+        if self._gamma_provider()._gamma_is_pay_later():
+            return True
+        return self._gamma_transaction().state == 'done'
+
+    def _gamma_qualifies(self):
+        """ True when this order should have a reward QR code now: it is a shop order placed since
+        the module was installed, rewards are on, the business has a Reward service, the payment
+        provider earns one, the currencies match, the order is confirmed and the money is in — for a
+        paid-later order, that is when the shop confirms it. Orders settled with store credits never
+        earn one. """
+        self.ensure_one()
+        installed_on = gamma_api.installed_on(self.env)
         return (
             self.state == 'sale'
             and self.amount_total > 0
+            and bool(installed_on) and self.date_order and self.date_order >= installed_on
             and self._gamma_may_earn()
+            and self._gamma_paid()
             and gamma_api.currency_matches(self.env, self.currency_id.name)
         )
+
+    def _gamma_note(self, body):
+        """ A line in the order's chatter, written by the system rather than the website visitor. """
+        self.ensure_one()
+        self.with_user(SUPERUSER_ID).message_post(body=body)
 
     # ------------------------------------------------------------------ the Gamma bill
 
@@ -85,15 +102,15 @@ class SaleOrder(models.Model):
             return False
         try:
             bill = api.create_bill({
-                'reference': order.name,
-                'total': round(order.amount_total, order.currency_id.decimal_places),
+                'reference': gamma_api.reference(self.env, order.name),
+                'total': order.currency_id.round(order.amount_total),
                 'currencyCode': order.currency_id.name,
                 'issuedOn': fields.Datetime.now().isoformat() + 'Z',
                 'platform': 'odoo',
                 'pluginVersion': gamma_api.VERSION,
             })
         except gamma_api.GammaApiError as e:
-            order.write({'gamma_error': gamma_api.explain(e)[:250], 'gamma_attempts': order.gamma_attempts + 1})
+            order.write({'gamma_error': gamma_api.explain(self.env, e)[:250], 'gamma_attempts': order.gamma_attempts + 1})
             _logger.warning("Gamma Wallet: bill for %s failed: %s", order.name, e)
             return False
         order.write({
@@ -105,7 +122,7 @@ class SaleOrder(models.Model):
             'gamma_claimed_on': bill.get('claimedOn'),
             'gamma_error': False,
         })
-        order.message_post(body=_("Sent to Gamma Wallet. The customer can collect the reward for this order with its QR code."))
+        order._gamma_note(_("Sent to Gamma Wallet. The customer can collect the reward for this order with its QR code."))
         return True
 
     def _gamma_refresh_status(self):
@@ -114,6 +131,10 @@ class SaleOrder(models.Model):
         order = self.sudo()
         if order.gamma_bill_status == 'Claimed' or not order.gamma_bill_id:
             return order.gamma_bill_status or ''
+        cache_key = (self.env.cr.dbname, order.id)
+        cached = gamma_api.cached_status(cache_key)
+        if cached:
+            return cached
         api = gamma_api.GammaApi.from_env(self.env)
         if not api:
             return order.gamma_bill_status or ''
@@ -121,10 +142,11 @@ class SaleOrder(models.Model):
             bill = api.get_bill(order.gamma_bill_id)
         except gamma_api.GammaApiError:
             return order.gamma_bill_status or ''
+        gamma_api.remember_status(cache_key, bill['status'])
         if bill['status'] != order.gamma_bill_status:
             order.write({'gamma_bill_status': bill['status'], 'gamma_claimed_on': bill.get('claimedOn')})
             if bill['status'] == 'Claimed':
-                order.message_post(body=_("The customer collected the Gamma Wallet reward."))
+                order._gamma_note(_("The customer collected the Gamma Wallet reward."))
         return bill['status']
 
     def _gamma_send_reward_email(self):
@@ -135,10 +157,11 @@ class SaleOrder(models.Model):
             return False
         # Sent as the system (OdooBot), like Odoo's own order emails: the confirmation often runs for
         # the website's anonymous visitor, who has no sender address.
-        template = self.env.ref('gamma_wallet.mail_template_gamma_reward').with_user(SUPERUSER_ID)
-        template.send_mail(order.id, force_send=True)
+        # Marked first and queued (not sent at once), so a retried request never sends it twice.
         order.gamma_emailed = True
-        order.message_post(body=_("The Gamma reward QR code was emailed to %s.", order.partner_id.email))
+        template = self.env.ref('gamma_wallet.mail_template_gamma_reward').with_user(SUPERUSER_ID)
+        template.send_mail(order.id)
+        order._gamma_note(_("The Gamma reward QR code was emailed to %s.", order.partner_id.email))
         return True
 
     def _gamma_reward_after_confirm(self):
@@ -159,6 +182,10 @@ class SaleOrder(models.Model):
         ], limit=50)
         orders._gamma_reward_after_confirm()
 
+    def _gamma_cron_check_connection(self):
+        """ Every hour: asks Gamma again who the token belongs to and whether a Reward service is active. """
+        gamma_api.refresh_if_stale(self.env, timeout=20)
+
     def action_confirm(self):
         res = super().action_confirm()
         try:
@@ -168,7 +195,11 @@ class SaleOrder(models.Model):
         return res
 
     def action_gamma_send_reward(self):
-        """ The button on the order: create the reward if needed and email it to the customer. """
+        """ The button on the order: create the reward if needed and email it to the customer.
+        Only for users who may edit the order (staff), never for customers calling it directly. """
+        self.check_access('write')
+        # A click is a deliberate new try, even after the automatic attempts ran out.
+        self.sudo().filtered(lambda o: not o.gamma_bill_id).write({'gamma_attempts': 0})
         for order in self:
             if not order._gamma_send_reward_email():
                 raise UserError(order.gamma_error or _(
@@ -178,7 +209,7 @@ class SaleOrder(models.Model):
 
     # ------------------------------------------------------------------ what the customer sees
 
-    def gamma_portal_values(self):
+    def _gamma_portal_values(self):
         """ What the order confirmation and portal pages show for this order (read-only):
         kind = 'credit' (QR code to settle with store credits), 'credit_done', 'reward', 'note' or None. """
         self.ensure_one()
@@ -195,7 +226,7 @@ class SaleOrder(models.Model):
             return dict(base, kind='credit', seconds=seconds, link=tx.gamma_credit_link or '',
                         qr='data:image/png;base64,%s' % tx.gamma_credit_qr if tx.gamma_credit_qr else '')
         if order.state == 'sale':
-            order._gamma_ensure_bill()  # retries a failed one when the customer looks
+            order._gamma_ensure_bill()  # retries a failed one when the customer looks (order already shown to them)
         if order.gamma_bill_id:
             claimed = order.gamma_bill_status == 'Claimed'
             return dict(base, kind='reward', claimed=claimed, poll=not claimed,

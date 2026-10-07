@@ -1,18 +1,11 @@
 {
     'name': 'Gamma Wallet',
-    'version': '18.0.1.0.0',
-    'category': 'Website/Website',
+    'version': '18.0.1.1.0',
+    'category': 'Website/eCommerce',
     'summary': 'Rewards for paid orders and store credits at checkout, with the Gamma Wallet app.',
-    'description': """
-Customers earn a reward for every paid order and can settle an order with the store credits they
-hold at the shop, by scanning a QR code with the Gamma Wallet app. Credits are a promise of value
-at the business, not money, and Gamma never handles a payment.
-
-Needs a Gamma Business account (https://business.gamma-wallet.com) with a Reward service active
-and an integration token.
-""",
     'author': 'Gamma Wallet',
-    'website': 'https://www.gamma-wallet.com',
+    'website': 'https://www.gamma-wallet.com/en',
+    'support': 'developer@gamma-wallet.com',
     'depends': ['website_sale', 'payment'],
     'data': [
         'views/payment_templates.xml',
@@ -31,10 +24,13 @@ and an integration token.
             'gamma_wallet/static/src/js/post_processing.js',
         ],
     },
-    'images': ['static/description/icon.png'],
+    'images': [
+        'static/description/banner.png',
+        'static/description/screenshot-confirmation-reward.png',
+        'static/description/screenshot-confirmation-credits.png',
+        'static/description/screenshot-settings.png',
+    ],
     'post_init_hook': 'post_init_hook',
     'uninstall_hook': 'uninstall_hook',
-    'installable': True,
-    'application': False,
     'license': 'LGPL-3',
 }

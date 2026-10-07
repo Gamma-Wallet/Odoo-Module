@@ -74,6 +74,8 @@ class GammaWalletController(Controller):
         if not order or not order._gamma_settled_with_credits():
             return _reply({'error': 'not_found'}, 404)
         tx = order._gamma_transaction()
+        # One request at a time per order: a second click waits, then sees the first one's code.
+        tx._gamma_lock()
         # The customer may have settled the current code a moment ago, before the page asked.
         try:
             current = tx._gamma_status()

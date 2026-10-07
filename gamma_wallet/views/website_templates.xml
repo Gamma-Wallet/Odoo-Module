@@ -3,7 +3,16 @@
     <!-- The Gamma Wallet box: the reward QR code, or the store-credit QR code with its countdown.
          Expects `order`. Asks this shop (never Gamma) every 5 seconds through static/src/js. -->
     <template id="box">
-        <t t-set="gw" t-value="order.gamma_portal_values()"/>
+        <t t-set="gw" t-value="order._gamma_portal_values()"/>
+        <!-- Texts the page script shows later, here so Odoo translates them with the page. -->
+        <div class="gamma-wallet-texts" hidden="hidden" t-if="gw['kind'] in ('reward', 'credit')">
+            <div data-key="claimed">Reward collected. Thank you!</div>
+            <div data-key="secondsLeft">%d s left</div>
+            <div data-key="timeLeft">%s left</div>
+            <div data-key="expired">This code has expired.</div>
+            <div data-key="settled">Done! Your order is settled with your store credits.</div>
+            <div data-key="unavailable">Gamma cannot be reached right now. Please try again in a moment.</div>
+        </div>
         <t t-if="gw['kind'] == 'reward'">
             <section class="gamma-wallet-box" data-kind="reward" t-att-data-status-url="gw['status_url']" t-att-data-poll="'1' if gw['poll'] else '0'">
                 <div t-attf-class="gw-card #{'gw-is-done' if gw['claimed'] else ''}">
